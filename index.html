@@ -82,6 +82,11 @@
             <div id="date-display-text" class="text-center text-xs font-semibold text-teal-600 mt-2 bg-white/40 rounded-full py-1">
                 Memuat tanggal...
             </div>
+            
+            <!-- Hijri Date Display -->
+            <div id="hijri-date-display" class="text-center text-xs font-medium text-teal-500 mt-1 pb-1">
+                ...
+            </div>
         </div>
 
         <!-- Countdown Section -->
@@ -140,6 +145,7 @@
         const citySelector = document.getElementById('city-selector');
         const datePicker = document.getElementById('date-picker');
         const dateDisplayText = document.getElementById('date-display-text');
+        const hijriDateDisplay = document.getElementById('hijri-date-display');
         const scheduleList = document.getElementById('schedule-list');
         const nextPrayerNameEl = document.getElementById('next-prayer-name');
         const countdownTimerEl = document.getElementById('countdown-timer');
@@ -201,6 +207,21 @@
         function updateDateDisplayText(dateObj) {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             dateDisplayText.textContent = dateObj.toLocaleDateString('id-ID', options);
+
+            // Menampilkan Tanggal Hijriah (Menggunakan Hisab Komputasi Standar Intl)
+            try {
+                // Menggunakan kalender Islam standar (biasanya tabular atau Umm al-Qura)
+                const hijriDate = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                }).format(dateObj);
+                
+                hijriDateDisplay.textContent = hijriDate + " H";
+            } catch (e) {
+                console.error("Browser tidak mendukung konversi Hijriah", e);
+                hijriDateDisplay.textContent = ""; 
+            }
         }
 
         // --- Fetch Cities in Lampung (Updated for 15 Regions) ---
